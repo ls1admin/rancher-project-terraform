@@ -29,22 +29,19 @@ resource "rancher2_project" "project" {
         services_load_balancers  = resource_quota.value.project_limit.services_load_balancers
         services_node_ports      = resource_quota.value.project_limit.services_node_ports
       }
-      dynamic "namespace_default_limit" {
-        for_each = resource_quota.value.namespace_default_limit != null ? [resource_quota.value.namespace_default_limit] : []
-        content {
-          limits_cpu               = namespace_default_limit.value.limits_cpu
-          limits_memory            = namespace_default_limit.value.limits_memory
-          requests_cpu             = namespace_default_limit.value.requests_cpu
-          requests_memory          = namespace_default_limit.value.requests_memory
-          pods                     = namespace_default_limit.value.pods
-          services                 = namespace_default_limit.value.services
-          config_maps              = namespace_default_limit.value.config_maps
-          persistent_volume_claims = namespace_default_limit.value.persistent_volume_claims
-          replication_controllers  = namespace_default_limit.value.replication_controllers
-          secrets                  = namespace_default_limit.value.secrets
-          services_load_balancers  = namespace_default_limit.value.services_load_balancers
-          services_node_ports      = namespace_default_limit.value.services_node_ports
-        }
+      namespace_default_limit {
+        limits_cpu               = try(resource_quota.value.namespace_default_limit.limits_cpu, null)
+        limits_memory            = try(resource_quota.value.namespace_default_limit.limits_memory, null)
+        requests_cpu             = try(resource_quota.value.namespace_default_limit.requests_cpu, null)
+        requests_memory          = try(resource_quota.value.namespace_default_limit.requests_memory, null)
+        pods                     = try(resource_quota.value.namespace_default_limit.pods, null)
+        services                 = try(resource_quota.value.namespace_default_limit.services, null)
+        config_maps              = try(resource_quota.value.namespace_default_limit.config_maps, null)
+        persistent_volume_claims = try(resource_quota.value.namespace_default_limit.persistent_volume_claims, null)
+        replication_controllers  = try(resource_quota.value.namespace_default_limit.replication_controllers, null)
+        secrets                  = try(resource_quota.value.namespace_default_limit.secrets, null)
+        services_load_balancers  = try(resource_quota.value.namespace_default_limit.services_load_balancers, null)
+        services_node_ports      = try(resource_quota.value.namespace_default_limit.services_node_ports, null)
       }
     }
   }
