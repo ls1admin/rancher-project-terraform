@@ -30,18 +30,18 @@ resource "rancher2_project" "project" {
         services_node_ports      = resource_quota.value.project_limit.services_node_ports
       }
       namespace_default_limit {
-        limits_cpu               = try(resource_quota.value.namespace_default_limit.limits_cpu, null)
-        limits_memory            = try(resource_quota.value.namespace_default_limit.limits_memory, null)
-        requests_cpu             = try(resource_quota.value.namespace_default_limit.requests_cpu, null)
-        requests_memory          = try(resource_quota.value.namespace_default_limit.requests_memory, null)
-        pods                     = try(resource_quota.value.namespace_default_limit.pods, null)
-        services                 = try(resource_quota.value.namespace_default_limit.services, null)
-        config_maps              = try(resource_quota.value.namespace_default_limit.config_maps, null)
-        persistent_volume_claims = try(resource_quota.value.namespace_default_limit.persistent_volume_claims, null)
-        replication_controllers  = try(resource_quota.value.namespace_default_limit.replication_controllers, null)
-        secrets                  = try(resource_quota.value.namespace_default_limit.secrets, null)
-        services_load_balancers  = try(resource_quota.value.namespace_default_limit.services_load_balancers, null)
-        services_node_ports      = try(resource_quota.value.namespace_default_limit.services_node_ports, null)
+        limits_cpu               = try(resource_quota.value.namespace_default_limit.limits_cpu, resource_quota.value.project_limit.limits_cpu)
+        limits_memory            = try(resource_quota.value.namespace_default_limit.limits_memory, resource_quota.value.project_limit.limits_memory)
+        requests_cpu             = try(resource_quota.value.namespace_default_limit.requests_cpu, resource_quota.value.project_limit.requests_cpu)
+        requests_memory          = try(resource_quota.value.namespace_default_limit.requests_memory, resource_quota.value.project_limit.requests_memory)
+        pods                     = try(resource_quota.value.namespace_default_limit.pods, resource_quota.value.project_limit.pods)
+        services                 = try(resource_quota.value.namespace_default_limit.services, resource_quota.value.project_limit.services)
+        config_maps              = try(resource_quota.value.namespace_default_limit.config_maps, resource_quota.value.project_limit.config_maps)
+        persistent_volume_claims = try(resource_quota.value.namespace_default_limit.persistent_volume_claims, resource_quota.value.project_limit.persistent_volume_claims)
+        replication_controllers  = try(resource_quota.value.namespace_default_limit.replication_controllers, resource_quota.value.project_limit.replication_controllers)
+        secrets                  = try(resource_quota.value.namespace_default_limit.secrets, resource_quota.value.project_limit.secrets)
+        services_load_balancers  = try(resource_quota.value.namespace_default_limit.services_load_balancers, resource_quota.value.project_limit.services_load_balancers)
+        services_node_ports      = try(resource_quota.value.namespace_default_limit.services_node_ports, resource_quota.value.project_limit.services_node_ports)
       }
     }
   }
