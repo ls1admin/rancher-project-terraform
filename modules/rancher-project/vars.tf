@@ -59,5 +59,6 @@ variable "resource_quota" {
       services_load_balancers  = optional(string)
       services_node_ports      = optional(string)
     }))
+  })
   default = null
 }
