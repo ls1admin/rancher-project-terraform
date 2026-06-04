@@ -29,7 +29,7 @@ variable "container_resource_limit" {
 }
 
 variable "resource_quota" {
-  description = "Resource quotas enforced at the project level and as the default per-namespace quota. Both sub-blocks are required when this variable is set."
+  description = "Resource quotas enforced at the project level and optionally as the default per-namespace quota."
   type = object({
     project_limit = object({
       limits_cpu               = optional(string)
@@ -45,7 +45,7 @@ variable "resource_quota" {
       services_load_balancers  = optional(string)
       services_node_ports      = optional(string)
     })
-    namespace_default_limit = object({
+    namespace_default_limit = optional(object({
       limits_cpu               = optional(string)
       limits_memory            = optional(string)
       requests_cpu             = optional(string)
@@ -58,7 +58,6 @@ variable "resource_quota" {
       secrets                  = optional(string)
       services_load_balancers  = optional(string)
       services_node_ports      = optional(string)
-    })
-  })
+    }))
   default = null
 }
