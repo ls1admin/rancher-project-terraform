@@ -1,11 +1,11 @@
 ################################################################################
-# Rancher Student
+# Rancher Global Configuration
 ################################################################################
 # TODO: Deploy client auth via Terraform
 # This is not supported yet: https://github.com/rancher/terraform-provider-rancher2/issues/749
-# In the meantime we deploy it via UI by adding an auth provider:
-# https://access.k8s.ase.cit.tum.de/dashboard/c/local/auth/config
-# We could push this as a curl request
+# In the meantime we deploy it via UI by adding an auth provider under:
+#   Rancher > Cluster Management > Configuration > Authentication
+# We could push this as a curl request:
 # https://github.com/juanbrny/rancher_api_with_terraform_example/blob/main/main.tf
 
 # resource "rancher2_auth_config_keycloak" "rancher_student_keycloak" {

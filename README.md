@@ -36,14 +36,20 @@ variable for Terraform:
 export TF_VAR_keycloak_client_id=client_id
 export TF_VAR_keycloak_client_secret=client_secrettttttttttttttt
 export TF_VAR_keycloak_url=https://keycloak.example.com
-export TF_VAR_keycloak_realm=tum
+export TF_VAR_keycloak_realm=my-realm
 ```
 
 ## Creating Resources
 
 Now terraform should be able to log into Keycloak and Rancher.
 
-We will be importing some already exising groups from Rancher since we will edit
+First, initialize the Terraform providers:
+
+```bash
+terraform init
+```
+
+We will be importing some already existing groups from Rancher since we will edit
 them in the Terraform code and thus need to import them into the terraform state
 before running the code.
 
@@ -68,19 +74,34 @@ When configuring OIDC you will be asked to log into Keycloak with your Keycloak
 account. This will link your Keycloak account as a Rancher Admin account.
 You also have the option to restrict login to certain groups if you want.
 
+## Optional: Second Rancher Instance
+
+If you operate a second (e.g. production) Rancher instance that also needs to be
+registered as a Keycloak client, copy `keycloak-client.nocommit.tf` to your
+working directory and set the additional variable:
+
+```bash
+export TF_VAR_rancher2_prod_api_url=https://rancher-prod.example.com
+```
+
+Files matching `*.nocommit.tf` are excluded by `.gitignore` so that
+instance-specific configurations are not accidentally committed when you fork
+this repository. The `keycloak-client.nocommit.tf` file in this repo serves as
+a template.
+
 # Usage
 
 Once Terraform has finished the initial run successfully, and students can log
 into rancher via Keycloak we can start creating Projects.
 
-For this you will likely have a 2. Cluster imported in Rancher that you dedicate
-to a course. Enter the ID of that cluster into the `rancher-clusters.tf` file as
-a local variable since you will need it for each project.
+For this you will likely have a downstream Cluster imported in Rancher that you
+dedicate to a course. Enter the ID of that cluster into the `rancher-clusters.tf`
+file as a local variable since you will need it for each project.
 
 ```diff
   locals {
-    cluster_id_student = "c-m-r8m7qffs" # downstream-student-ipraktikum24
-+   cluster_id_newcluster = "c-m-abcdefg" # downstrea-testcluster
+-   cluster_id_student = "c-m-CHANGEME"
++   cluster_id_student = "c-m-abcdefg" # my-student-cluster
   }
 ```
 
@@ -88,20 +109,20 @@ Now you can simply create new Projects on demand with the terraform module, here
 is an example:
 
 ```tf
-module "terraform-test-course" {
+module "my-course" {
   source = "./modules/rancher-project"
 
   cluster_id   = local.cluster_id_student
-  project_name = "terraform-test-course"
+  project_name = "my-course"
 
   access = [
     {
       role_template_id = "project-owner"
-      entity           = "itg-admin"
+      entity           = "admin-group"
     },
     {
       role_template_id = "read-only"
-      entity           = "keycloakoidc_group://ios24-students"
+      entity           = "keycloakoidc_group://my-course-students"
       no_prefix        = true
     }
   ]
@@ -115,11 +136,11 @@ module "terraform-test-course" {
   - `role_template_id` as the Role that the entity will assume in the Project,
     here we can also use the custom roles we created such as `project-owner-pv`.
   - `entity` is the entity we want to give project-scoped access to. By default
-    this will map to Keycloak groups, so an entity of `itg-admin` will allow
-    everybody access that is a member of the `itg-admin` Keycloak group.
+    this will map to Keycloak groups, so an entity of `my-group` will allow
+    everybody access that is a member of the `my-group` Keycloak group.
     Internally this is prefixed with the `keycloakoidc_group://` which is why we
-    give the optin to disable this prefix with `no_prefix`
-  - if `no-prefix` is set to true we don't prefix your entities and you have
+    give the option to disable this prefix with `no_prefix`.
+  - if `no_prefix` is set to true we don't prefix your entities and you have
     control over the prefixes yourself. This is useful if you use multiple
     authentication mechanisms in your Rancher instance and want to for example
-    give a local user some premissions.
+    give a local user some permissions.

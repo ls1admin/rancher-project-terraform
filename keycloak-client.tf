@@ -41,7 +41,7 @@ resource "keycloak_openid_audience_protocol_mapper" "rancher_student_client_audi
   client_id = keycloak_openid_client.rancher-student.id
   name      = "audience-mapper"
 
-  included_client_audience = keycloak_openid_client.rancher.client_id
+  included_client_audience = keycloak_openid_client.rancher-student.client_id
   add_to_access_token      = true
 }
 

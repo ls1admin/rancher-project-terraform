@@ -7,14 +7,14 @@ resource "keycloak_openid_client" "rancher" {
 
   name        = "Rancher Production"
   enabled     = true
-  root_url    = "https://rancher.ase.cit.tum.de"
-  base_url    = "https://rancher.ase.cit.tum.de"
-  web_origins = ["https://rancher.ase.cit.tum.de"]
+  root_url    = "${var.rancher2_prod_api_url}"
+  base_url    = "${var.rancher2_prod_api_url}"
+  web_origins = ["${var.rancher2_prod_api_url}"]
 
   access_type           = "CONFIDENTIAL"
   standard_flow_enabled = true
   valid_redirect_uris = [
-    "https://rancher.ase.cit.tum.de/verify-auth"
+    "${var.rancher2_prod_api_url}/verify-auth"
   ]
 }
 

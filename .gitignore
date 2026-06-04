@@ -38,3 +38,8 @@ terraform.rc
 
 # Misc
 .env
+
+# Instance-specific configuration files (copy .nocommit.tf.example files
+# and rename to .nocommit.tf to add local configuration that should not
+# be committed upstream)
+*.nocommit.tf
