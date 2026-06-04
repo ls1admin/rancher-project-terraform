@@ -1,25 +1,29 @@
 variable "keycloak_url" {
-  description = "Base URL of the Keycloak instance (e.g. https://keycloak.example.com)"
+  description = "Base URL of the Keycloak instance (e.g. https://keycloak.example.com). Only required when managing Keycloak resources."
   type        = string
   sensitive   = false
+  default     = null
 }
 
 variable "keycloak_realm" {
-  description = "Keycloak realm to create and manage resources in"
+  description = "Keycloak realm to create and manage resources in. Only required when managing Keycloak resources."
   type        = string
   sensitive   = false
+  default     = null
 }
 
 variable "keycloak_client_id" {
-  description = "Client ID of the Keycloak service account used by Terraform (see https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs)"
+  description = "Client ID of the Keycloak service account used by Terraform (see https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs). Only required when managing Keycloak resources."
   type        = string
   sensitive   = true
+  default     = null
 }
 
 variable "keycloak_client_secret" {
-  description = "Client secret of the Keycloak service account used by Terraform"
+  description = "Client secret of the Keycloak service account used by Terraform. Only required when managing Keycloak resources."
   type        = string
   sensitive   = true
+  default     = null
 }
 
 variable "rancher2_api_url" {
